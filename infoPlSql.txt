@@ -1,0 +1,1137 @@
+-- Estudo de Pl/SQL
+-- Michael Douglas Bonfogo.
+-----------------------------------------------------------------------------------------------
+
+DML – Data Manipulation Language SELECT, INSERT, UPDATE, DELETE
+TCL – Trasaction Control Language COMMIT, ROLLBACK, SAVEPOINT
+DDL – Data Definition Language CREATE, ALTER, TRUNCATE, DROP
+DCL – Data Control Language GRANT, REVOKE
+
+AND e OR podem ser combinadas em uma instrução SELECT, INSERT, UPDATE ou DELETE, é importante usar parênteses para que o banco de dados saiba qual ordem avaliar cada condição
+------------------------------------------
+Funções de Datas
+
+D – Dia da semana (1 a 7) – pode ser DAY
+DD – Dia do mês ( 1 a 31)
+DDD – Dia do ano (1 a 366)
+MM – Mês (1 a 12)
+YYYY –Ano
+HH12 – Hora do Dia (1 a 12)
+pode ser HH HH24 – Hora do Dia (1 a 24)
+MI – Minutos
+SS - Segundos
+MONTH – Nome do mês
+
+Data atual com hora:
+SELECT SYSDATE FROM DUAL
+
+Data atual sem hora: 
+SELECT TRUNC(SYSDATE) FROM DUAL
+
+Exibe em formato ANO/MES  HORA:MINUTO:
+SELECT TO_CHAR(HIREDATE, ‘DD/MM HH:MI’) 
+FROM EMP
+
+Tipos de Dados:
+VARCHAR2 – Texto
+DATE – Datas
+NUMBER(n) – Número inteiro
+NUMBER(n,d) – Número com casas decimais(d)
+CHAR(n) – Caracteres de comprimento fixo
+
+Coversões:
+TO_CHAR – Converte um número ou data em caractere
+
+TO_DATE – Converte um caractere em formato  DATE - 
+TO_DATE(‘28/02/2018’, ‘dd/MM/yyyy’);
+
+TO_NUMBER – Converte um caractere em formato NUMBER
+------------------------------------------
+Funções de Agrupamento:
+
+MAX – Maior valor
+AVG – Valor médio
+MIN – Menor valor
+COUNT – Contagem de registros não nulos
+SUM – Soma dos valores
+
+SELECT COUNT(*) FROM EMP
+SELECT COUNT(DISTINCT ENAME) FROM EMP
+SELECT MAX(SAL) FROM EMP
+------------------------------------------
+DECODE:
+
+A função DECODE Oracle / PLSQL possui a funcionalidade de uma instrução IF-THEN-ELSE.
+
+DECODE (  [Coluna], ARGUMENTO 1, RESPOSTA 1, ARGUMENTO N, RESPOSTA N, VALOR DEFAULT );
+
+SELECT ENAME, JOB,
+DECODE,(JOB, ‘CLERK’, ‘WORKER’, ‘MANAGER’, ‘BOSS’, ‘UNDEFINED’) RESULT
+FROM EMP 
+WHERE SAL>1000 AND EMPNO > 1000 AND SAL < 10000
+ORDER BY SAL;
+
+------------------------------------------
+BETWEEN é usada para recuperar valores dentro de um intervalo em uma instrução SELECT, INSERT, UPDATE ou DELETE.
+
+SELECT * 
+FROM order_details 
+WHERE order_date BETWEEN TO_DATE ('2014/02/01', 'yyyy/mm/dd') AND TO_DATE ('2014/02/28', 'yyyy/mm/dd');
+
+------------------------------------------
+SubSelect
+É possível usar subselect onde deveria haver colunas, tabelas ou até mesmo condições.
+
+SELECT (SELECT ENAME FROM EMP WHERE EMPNO = 7839) FROM EMP
+
+SELECT * FROM ( SELECT ENAME FROM EMP)
+
+SELECT * FROM EMP WHERE ENAME = (SELECT ENAME FROM EMP WHERE EMPNO = 7839)
+
+SELECT (SELECT ENAME FROM EMP Z WHERE Z.EMPNO = E.EMPNO ) FROM EMP E
+------------------------------------------
+
+Primary Key & Foreign Key:
+
+Chave primária: coluna que identifica um registro dos demais daquela tabela.
+Chave estrangeira: coluna ou conjunto de colunas que são chaves primárias de outras tabelas.
+------------------------------------------
+Criando Tabelas
+
+CREATE TABLE <TABELA> (<COLUNA> <TIPO> <OPCIONAIS>);
+CREATE TABLE TESTE (ID  NUMBER(1));
+------------------------------------------
+Not Null
+
+É possível definir uma coluna como Not Null (Não permite a inserção de valores núlos)
+Create table tabela ( Id  number PRIMARY KEY, Nome varchar2(10) NOT NULL )
+------------------------------------------
+Sequence ????
+------------------------------------------
+Remoção de Tabelas
+
+Drop table tabela;
+------------------------------------------
+Criando Tabelas
+
+
+------------------------------------------
+HAVING:  
+HAVING é usada em combinação com a cláusula GROUP BY para restringir os grupos de linhas retornadas a apenas aqueles cuja condição é VERDADEIRA.
+
+SELECT DEPTNO, AVG(SAL) 
+FROM EMP 
+GROUP BY DEPTNO HAVING COUNT(*) > 3
+------------------------------------------
+Triggers:
+Disparadas automaticamente nas ações de update, delete e insert nas tabelas associadas.
+
+Tipos de triggers: 
+ROW TRIGGERS – Executadas para cada linha da tabela afetada
+STATEMENT TRIGGERS – Executadas 1 única vez para cada comando SQL que afeta as tabelas.
+
+Quando será acionado: 
+Before row –Antes - linha
+Before statement – Antes - comandos 
+After row – depois - linha 
+After statement – depois - comandos
+
+CREATE [ OR REPLACE ] 
+TRIGGER <NOME> BEFORE INSERT ON <TABELA> [ FOR EACH ROW ] 
+DECLARE <VARIAVEIS> BEGIN <CODIGO> EXCEPTION WHEN ... END; /
+
+------------------------------------------
+Package:
+
+Package é um conjunto de objetos PLSQL que são “empacotados” com uma sintaxe especial BEGIN/END.
+Podemos ter numa package: Cursores, functions, procedures, exceptions, variáveis, comandos TYPE etc.
+Vantagens de se utilizar package: conteúdo oculto, projeto orientado a objetos, persistência de objetos e melhor performance.
+
+Estrutura de uma especificação de package:
+
+PACKAGE <NOME PACKAGE> IS 
+<DECLARAÇÃO DE VARIAVEIS E TIPOS> 
+<DECLARAÇÃO DE CURSOR> 
+<DECLARAÇÃO DE MÓDULOS> 
+END <NOME PACKAGE>; /
+
+------------------------------------------
+UNION, UNION ALL, INTERSECT e MINUS
+
+Ao utilizar as cláusulas UNION, UNION ALL, INTERSECT e MINUS, a quantidade de campos e os tipos de dados retornados pelas queries devem ser iguais e na ordem correta.
+
+UNION:
+
+SELECT * FROM TABELA1
+UNION 
+SELECT * FROM TABELA2
+
+UNION ALL:
+
+SELECT * FROM TABELA1
+UNION ALL
+SELECT * FROM TABELA2
+
+INTERSECT:
+
+SELECT * FROM TABELA1
+INTERSECT
+SELECT * FROM TABELA2
+
+MINUS:
+
+SELECT * FROM TABELA1
+MINUS
+SELECT * FROM TABELA2
+------------------------------------------
+
+Declare:
+
+Composição:
+Variáveis; 
+Constantes; 
+Cursores; 
+Procedures; 
+Functions.
+
+TIPOS SIMPLES
+TIPOS COMPOSTOS
+TIPOS REFERENCIADOS
+
+Declaração de variáveis e inicialização de valores:
+
+DECLARE
+V_ID_AUDITORIA VARCHAR2(20);
+V_NOME VARCHAR2(100): 'JOÃO';
+V_DATA DATE;
+
+V_NOME TABELA1.NOMETABELA%TYPE;
+BEGIN
+
+Atribuição de valores à variáveis:
+
+Atribuição através de SELECT:
+SELECT V_NOME
+INTO V_NOME_AUX
+FROM TABELA1
+WHERE ID = 1;
+
+Atribuição Direta:
+
+vlRETORNO := FALSE;
+VQTD ACERTOS := 0;
+V_AUX := V_AUX + 1;
+
+------------------------------------------
+
+OUTPUTS ?????
+
+------------------------------------------
+
+Estruturas condicionais- IF
+
+IF V_ID = 15 THEN
+<EXECUTA ALGO>
+ELSE
+<EXECUTA ALGO>
+END IF;
+
+IF V_ID = 15 THEN
+<EXECUTA ALGO>
+ELSIF V_ID =20 AND V_SIT = 1 THEN
+<EXECUTA ALGO>
+ELSE
+<EXECUTA ALGO>
+END IF;
+------------------------------------------
+
+Estruturas de repetição – FOR (valor inicial e final)
+
+FOR CONTADOR IN [REVERSE] VALOR_INI..VALOR_FIM LOOP 
+<EXECUTA COMANDOS>
+END LOOP;
+
+
+Estruturas de repetição – FOR (select)
+
+FOR interador 
+IN (SELECT CAMPO1, CAMPO2, CAMPO3 FROM TABELA1) 
+LOOP <EXECUTA COMANDOS> 
+END LOOP;
+
+Estruturasde repetição-WHILE
+
+WHILE CONDIÇÃO LOOP
+<EXECUTA COMANDO>
+END LOOP;
+
+Estruturasde repetição-LOOP
+
+LOOP
+<EXECUTA COMANDOS>
+IF CONDIÇÃO THEN EXIT;
+END LOOP;
+------------------------------------------
+Functions
+
+Algumas características:
+ Precisam necessariamente retornar um valor;
+ Podem ter parâmetros de entrada (IN), saída (OUT) ou entrada/saída (IN OUT);
+ Os tipos dos parâmetros não são infomados tamanhos;
+ Podem ser recursivas;
+ Devem ser chamadas através de atribuições a variáveis, outputs ou condições;
+
+Function -Estrutura
+
+FUNCTION F_TESTE (PARAMETRO IN OUT TIPO_PARAMETRO) RETURN TIPO_RETORNO IS
+<DECLARAÇÃO DE VARIAVEIS DA FUNÇÃO>
+BEGIN
+<EXECUÇÃO DE COMANDOS>
+RETURN VALOR_RETORNO;
+END;
+
+
+Function -Exemplo
+
+DECLARE
+v_teste VARCHAR2(50);
+v_tipc NUMBER:=15;
+
+FUNCTION f_teste(p_tipo IN NUMBER) RETURN VARCHAR2 IS vf_descricao VARCHAR2(50);
+
+BEGIN
+SELECT TOC.DESCRICAO
+INTO vf_descricao
+FROM Teste TOC
+WHERE TOC.ID = p_tipo;
+
+return vf_descricao;
+
+EXCEPTION
+WHEN NO_DATA_FOUND THEN
+RETURN 'ERRO AO OBTER DESCRICAO';
+END;
+
+BEGIN
+v_teste := f_teste(v_tipo);
+DBMS_OUTPUT.PUT_LINE(V_TESTE);
+END;
+------------------------------------------
+
+Procedures
+
+Algumas características:
+Não retorna valor diretamente;
+Podem ter parâmetros de entrada (IN), saída (OUT) ou entrada/saída (IN OUT);
+Os tipos dos parâmetros não são infomados tamanhos;
+Podem ser recursivas, desde que contenha uma condição de return; 
+Devem ser chamadas de forma “independente”;
+
+Procedure -Estrutura
+
+procedure proc_teste(parametro IN OUT tipo_parametro) IS 
+<DECLARAÇÃO DE VARIAVEIS DA PROCEDURE>
+BEGIN
+<EXECUÇÃO DE COMANDOS>
+END proc_teste;
+
+Procedure -Exemplo
+
+
+
+
+_________________________________________________________________________
+_________________________________________________________________________
+_________________________________________________________________________
+
+1) Introdução a Bancos de Dados:
+
+O primeiro módulo do curso de SQL oferece uma introdução ao tema de bancos de dados, suas estruturas e alguns termos técnicos utilizados nesta área de TI, além de oferecer uma visão geral sobre os principais bancos de dados disponíveis no mercado.
+
+Aula #1.1 (Teórica): Introdução a Bancos de Dados:
+
+Objetivos do curso:
+- Aprender a linguagem SQL;
+- Aprender a modelar, normalizar, criar e interagir com bancos de dados;
+
+Público alvo:
+- Programadores e desenvolvedores de software;
+- Administradores de bancos de dados;
+- Professores e estudantes de banco de dados;
+
+Requisistos:
+
+- Conhecimento basico de programação;
+------------------------------------------
+Faz parte do curso:
+- Ensinar a criar e modelar  bancos de dados;
+- Ensinar a normalizar um banco de dados;
+- Ensinar a interagir com bancos de dados;
+- Linguagem SQL ANSI;
+- Avaliações vs aulas praticas;
+------------------------------------------
+Banco de Dados são:
+Mecanismos de Armazenamento de Dados;
+Conjunto de informação com estrutura regular;
+Bancos de dados Relacionais ou não:
+
+Bancos de Dados não relacionais
+- arquivos estruturados;
+
+Bancos de dados Relacionais
+- Dados organizados em tabelas;
+- Tabelas podem se relacionar com outras tabelas;
+- Menor espaço de armazenamento;
+- Maior velocidade de acesso aos dados;
+- Padrão mundialmente utilizado;
+------------------------------------------
+Bancos de Dados:
+Ferramentas que permitem o armazenamento e manipulação de dados organizados em forma de tabelas;
+
+Tabelas:
+Forma de orgaização de dados formada por linhas e colunas
+
+Colunas:
+Campos que formam um registro
+
+Linhas:
+Registros ou Tuplas
+------------------------------------------
+Visões:
+Consultas SQL a dados das tabelas do banco sem armazená-los;
+
+Índices:
+Estruturas que gerenciam a ordenação de valores dos campos informados para melhorar a performace de processamento destes campos;
+------------------------------------------
+SGBD's
+- Sistema Gerenciador de Banco de Dados;
+- DBMS: Databse Management System;
+- SGBD não é um banco de dados, mas sim um complemento;
+- SGBD é um grupo de programas para interação com os dados;
+
+BANCO DE DADOS <-> SGBD <-> SISTEMA
+BANCO DE DADOS <-> SGBD <-> USUÁRIO
+
+------------------------------------------
+------------------------------------------
+SQL ( Structured Query Language )
+- Linguagem estruturada de consulta;
+
+Formada pelo conjunto das Linguagens:
+- DDL: (Data Definition Language) Linguagem de Definição de Dados;
+- DML: (Data Manipulation Language) Linguagem de Manipulção de Dados;
+- DQL: (Data Query Language) Linguagem de Consulta de Dados;
+- DCL: (Data Control Language) Linguagem de Controle de Dados;
+- DTL: (Data Transaction Language) Linguagem de transação de Dados;
+
+SQL => DDL - DML - DQL - DCL - DTL
+------------------------------------------
+Linguagem de Definição de Dados; DDL:
+
+CREATE: cria uma estrutura
+ALTER: altera uma estrutura
+DROP: exclui uma estrutura
+------------------------------------------
+Linguagem de Manipulção de Dados; DML:
+
+INSERT: insere dados
+UPDATE: altera dados
+DELETE: exclui dados
+------------------------------------------
+Linguagem de Consulta de Dados; DQL:
+
+SELECT: 
+retorna dados;
+ordenação de dados;
+agrupamento de dados;
+funções aritméticas;
+filtros de seleção;
+------------------------------------------
+Linguagem de Controle de Dados; DCL:
+
+GRANT: abilita acesso a dados e operações;
+REVOKE: revoga acesso a dados e operações;
+------------------------------------------
+Linguagem de transação de Dados; DTL:
+
+STAR TRANSITION: inicia a transação;
+COMMIT: concretiza a transação;
+ROLLBACK: anula a transação;
+------------------------------------------
+------------------------------------------
+Principais bancos de dados:
+
+MySQL
+PostgreSQL
+Firebird
+Oracle
+SqlServer
+------------------------------------------
+AULA 2
+------------------------------------------
+Relacionamentos e chaves
+
+• Relacionamentos
+Ligações entre tabelas
+• Chave Primária (Primary Key, PK)
+Coluna com valores únicos
+• Chave Composta
+Composição de duas ou mais colunas para gerar uma combinação única
+• Chave Estrangeira (Foreign Key, FK)
+Coluna que armazena a chave primária de outra tabela
+
+------------------------------------------
+Tipos de relacionamentos (1:1)
+
+• Relacionamento 1 para 1 (1:1)
+Para cada registro da primeira tabela existe no máximo um correspondente
+na segunda tabela, e vice-versa.
+------------------------------------------
+Tipos de relacionamentos (1:*)
+
+• Relacionamento 1 para muitos (1:*)
+Para cada registro da primeira tabela pode existir um ou mais
+correspondentes na segunda tabela, e para cada registro na segunda
+tabela existe apenas um registro correspondente na primeira tabela.
+
+------------------------------------------
+Tipos de relacionamentos (*:*)
+
+• Relacionamento muitos para muitos (*:*)
+Para cada registro da primeira tabela pode existir um ou mais
+correspondentes na segunda tabela, e vice-versa.
+------------------------------------------
+Boas práticas no uso de chaves
+
+• Quanto menor, melhor
+• Transparente para o usuário
+------------------------------------------
+Diagrama de modelo de dados
+
+• Um dos padrões de modelagem de dados
+• Relacionamento 1:1  ||-||
+• Relacionamento 1:*  ||-|*
+• Relacionamento *:*  *|-|*
+------------------------------------------
+Anomalias dos dados
+
+• Tabelas “fazem tudo” geram anomalias
+• Anomalia de inserção
+– Impede a inclusão de registros devido à falta de dados
+• Anomalia de exclusão
+– Impede a exclusão de registros devido ao relacionamento com outra tabela
+• Anomalia de alteração
+– Impede a alteração de registros devido ao relacionamento com outra
+tabela
+------------------------------------------
+Normalização de Dados
+
+• Evitar anomalias
+• Facilitar a manutenção
+• Maximizar a performance
+• Manter a integridade dos dados
+• Normalização de dados
+
+– Criada em 1970
+– 5 Formas Normais (FNs)
+– Na prática a normalização é feita por intuição
+– Resulta em um número maior de tabelas no banco
+– Mais tabelas podem aumentar a manutenção e diminuir a performance
+– Deve ser utilizado com bom senso
+------------------------------------------
+Primeira Forma Normal (1FN)
+
+• Cada linha de tabela deve representar um registro
+• Cada célula de tabela deve conter um único valor
+------------------------------------------
+Segunda Forma Normal (2FN)
+
+• Obrigatoriamente estar na 1FN
+• Atributos não chave da tabela devem depender
+de alguma das chaves da tabela
+------------------------------------------
+Terceira Forma Normal (3FN)
+
+• Obrigatoriamente estar na 2FN
+• Atributos não chave da tabela depender
+exclusivamente da chave primária da tabela
+------------------------------------------
+4FN e 5FN
+
+• Separam em novas tabelas valores que ainda
+estejam redundantes em uma mesma coluna
+
+
+------------------------------------------
+AULA 3
+------------------------------------------
+SQL ANSI, ISO e outros
+
+• SQL (Structured Query Language)
+Linguagem declarativa, detalha a forma do resultado
+Criado no início dos anos 70, em laboratórios da IBM
+Novos dialetos surgiram, derivando e evoluindo o SQL
+• Necessidade de padronização
+American National Standards Institute (ANSI) em 1986
+International Organization for Standardization (ISO) em 1987
+Revisto pela primeira vez em 1992 originando o padrão SQL-92
+Outras revisões:
+• SQL:1999 incorporou características de expressões regulares, queries
+recursivas e triggers
+• SQL:2003 incorporou características de XML, sequências
+• SQL:2008, SQL:2011
+Bancos de dados criam e evoluem suas próprias derivações do SQL
+Curso aborda SQL padrão, com menções a outras derivações
+------------------------------------------
+• Boleano e Numéricos
+
+------------------------------------------
+Tipos de dados
+
+• String
+
+• Date e hora
+
+• Listas customizadas
+
+------------------------------------------
+Outros tipos de dados
+
+• BLOB
+Permite o armazenamento de informações binárias, arquivos e imagens
+• TEXT
+Permite o armazenamento de grandes informações de strings
+• Redes
+Permite o armazenamento de endereços IP, MAC-ADDRESS e outros
+• Monetários
+Permite o armazenamento de valores monetários com formatação
+• Geométricos
+Permite o armazenamento de informações de formas geométricas
+
+------------------------------------------
+Atributos
+
+• NULL / Not NULL
+Permite ou não valores nulos
+• Unsigned / Signed
+Permite ou não números negativos
+• Auto-increment
+Sequências, contadores
+• Zerofill
+Preenche o valor numérico completando com zeros a esquerda
+
+------------------------------------------
+Boas práticas de armazenamento
+
+• Espaço em disco
+Quanto menor o tipo de dado, menos espaço ele ocupará
+• Processamento e busca
+Quanto menor o tipo de dado, mais rápido é o processamento
+• Maus usos dos tipos de dados
+Armazenar dados numéricos em colunas string
+Armazenar dados numéricos em campos maiores que o necessário
+Criar campos de string maiores do que o necessário
+• Bom usos dos tipos de dados
+Escolher o menor tipo de dados possível para armazenar suas informações
+Pergunta: Qual o menor e maior valor que o campo poderá receber?
+
+------------------------------------------
+DDL (Data Definition Language)
+
+• Linguagem de Definição de Dados
+– CREATE: Cria uma estrutura
+– ALTER: Altera uma estrutura
+– DROP: Exclui uma estrutura
+• Manuais dos bancos de dados
+– Links dos manuais dos principais bancos de
+dados estão disponíveis na seção Links do site
+da Softblue
+
+------------------------------------------
+Criando um banco de dados
+
+• Como funciona
+
+Servidor - Servidor
+
+Bancos - RH - Estoque
+
+Tabelas - Pessoas  Cargos - Produtos
+
+------------------------------------------
+Criando um banco de dados
+
+• CREATE DATABASE Nome
+Nomes sem espaços e sem caracteres especiais
+Os conjuntos mais utilizados são Latin1 e UTF-8
+• ALTER DATABASE Nome Propriedade
+• DROP DATABASE Nome
+Exclusão é definitiva e irreversível
+------------------------------------------
+Criando uma tabela
+
+• CREATE TABLE Nome (Campos)
+• Sintaxe de descrição de campo:
+Nome TipoDeDado Atributos
+• Atributos
+Null, Zerofill, Unsigned, Auto-increment, Chave
+• ALTER TABLE Nome Propriedade
+• DROP TABLE Nome
+Exclusão é definitiva e irreversível
+
+------------------------------------------
+Criando um índice
+
+• O que são índices
+• Como funciona
+------------------------------------------
+Criando um índice
+
+• CREATE INDEX Nome ON TabelaEColuna
+• ALTER INDEX Nome Propriedade
+• DROP INDEX Nome
+
+------------------------------------------
+Criando uma sequência
+
+• O que são sequências
+• CREATE SEQUENCE Nome
+• ALTER SEQUENCE Nome Propriedade
+• DROP SEQUENCE Nome
+Exclusão é definitiva e irreversível
+
+------------------------------------------
+AULA 4 - Manipulando Dados
+------------------------------------------
+DML e DQL
+
+• Linguagem de Manipulação de Dados
+– INSERT: Insere dados
+– UPDATE: Altera dados
+– DELETE: Exclui dados
+• Linguagem de Consulta de Dados
+– SELECT: Retorna dados
+– Ordenação de dados
+– Agrupamento de dados
+– Filtros de seleção
+– Funções aritméticas
+
+------------------------------------------
+Gerenciando dados
+
+• INSERT INTO Tabela VALUES (Valores)
+INSERT INTO PESSOAS VALUES (‘Andre’, ‘111.111.111-11’)
+INSERT INTO PESSOAS (NOME, CPF) VALUES (‘Andre’, ‘111.111.111-11’)
+• SELECT Campos FROM Tabela
+SELECT * FROM PESSOAS
+SELECT NOME FROM PESSOAS
+• UPDATE Tabela SET Campo = Valor
+UPDATE PESSOAS SET NOME = ‘Andre Milani’
+• DELETE FROM Tabela
+DELETE FROM PESSOAS
+------------------------------------------
+Filtros de seleção
+
+• Registros selecionados (WHERE)
+
+• Operadores relacionais
+Igual (=), Diferente (!=)
+Maior (>), Maior ou igual (>=)
+Menor (<), Menor ou igual (<=)
+Nulo (IS NULL), ou não-nulo (IS NOT NULL)
+Entre intervalo (BETWEEN)
+Valor parcial (LIKE)
+
+• Operadores lógicos
+– AND
+– OR
+– NOT
+
+------------------------------------------
+Consultando dados com filtros
+
+• SELECT Campos FROM Tabela WHERE Condição
+SELECT * FROM PESSOAS WHERE CPF = ‘111.111.111-11’
+SELECT NOME FROM PESSOAS WHERE IDADE > 20
+• UPDATE Tabela SET Campo = Valor WHERE Condição
+UPDATE PESSOAS SET NOME = ‘Fabio’ WHERE CPF = ‘222.222.222-22’
+UPDATE PESSOAS SET IDADE = 25 WHERE NOME = ‘Mario’
+• DELETE FROM Tabela WHERE Condição
+DELETE FROM PESSOAS WHERE CPF = ‘222.222.222-22’
+DELETE FROM PESSOAS WHERE NOME = ‘Mario’
+------------------------------------------
+Atributos especiais
+
+• Apelido de tabela
+SELECT Campos FROM Tabela Apelido ...
+SELECT TABELA_UM.NOME FROM PESSOAS TABELA_UM
+• Apelido de campos (AS)
+SELECT Campo AS Apelido FROM ...
+SELECT NOME AS PRIMEIRO_NOME FROM PESSOAS
+• Unindo seleções (UNION [ALL])
+SELECT ... UNION SELECT ...
+SELECT * FROM PESSOAS UNION SELECT * FROM CARGOS
+
+
+------------------------------------------
+AULA 5 - Relacionamentos e Visões
+------------------------------------------
+Relacionamentos no SQL:
+
+• Informações relacionadas entre si
+• Em geral entre diferentes tabelas
+• Geralmente possuem campos em comum
+• Parâmetro JOIN e suas variações
+• SELECT ... FROM T1 JOIN T2 ON T1.FK = T2.PK
+• SELECT ... FROM T1 JOIN T2 USING Chave
+• Compatibilidade com bancos de dados
+------------------------------------------
+Inner join
+
+• Join padrão
+• Produto cartesiano entre as tabelas
+• Combina todas as linhas da primeira tabela
+com todas as linhas da segunda, que
+satisfaçam as condições das chaves
+------------------------------------------
+Inner join
+
+• SELECT * FROM PESSOAS JOIN VEICULOS
+ON PESSOAS.CPF = VEICULOS.CPF
+------------------------------------------
+Equi join
+
+• Similar ao Inner join
+• Chaves de mesmo nome entre as tabelas
+• SELECT * FROM PESSOAS JOIN VEICULOS
+USING (CPF)
+------------------------------------------
+Non equi join
+
+• Relacionamento sem um campo em comum
+• SELECT P.NOME, P.SALARIO, S.FAIXA FROM
+PESSOAS P INNER JOIN SALARIOS S ON
+P.SALARIO BETWEEN S.INICIO AND S.FIM
+------------------------------------------
+Outer join, Left join, Left outer join
+
+• Linhas que não satisfazem a condição de união
+• Left: Linhas da primeira tabela cujo campo de
+condição não satisfaçam a união de tabelas
+• SELECT * FROM PESSOAS LEFT JOIN VEICULOS ON
+PESSOAS.CPF = VEICULOS.CPF
+------------------------------------------
+Right join, Right outer join
+
+• Similar ao Left join
+• Right: Linhas da segunda tabela cujo campo de
+condição não satisfaçam a união de tabelas
+• SELECT * FROM PESSOAS RIGHT JOIN VEICULOS
+ON PESSOAS.CPF = VEICULOS.CPF
+------------------------------------------
+Full outer join
+
+• Combinação de Left join e Right join
+• Linhas da primeira e segunda tabela cujos
+campos de condição não satisfaçam a união
+de tabelas
+------------------------------------------
+Full outer join
+
+• SELECT * FROM PESSOAS FULL JOIN
+VEICULOS ON PESSOAS.CPF =
+VEICULOS.CPF
+------------------------------------------
+Self join
+
+• União da tabela com ela mesma
+• SELECT A.NOME, B.NOME AS
+INDICADO_POR FROM PESSOAS A JOIN
+PESSOAS B ON A.INDICADO = B.CPF
+------------------------------------------
+Visões
+
+• Relação que não faz parte do modelo lógico
+• Acessível ao usuário como uma relação
+virtual
+• Otimização de espaço em disco
+• Centralização de código
+• Facilidade de manutenção de expressões
+SQL
+
+------------------------------------------
+Criando uma visão
+
+• CREATE VIEW Nome AS ExpressãoSQL
+• ALTER VIEW Nome Propriedade
+Exclusão e nova criação (substituição)
+• DROP VIEW Nome
+Apenas a estrutura da visão é removido
+Os dados permanecem intactos em suas respectivas
+tabelas
+
+------------------------------------------
+------------------------------------------
+AULA 6 - Funções Especiais e Subqueries
+------------------------------------------
+Funções de agregação
+
+• Funções de agregação
+– COUNT: Contagem de registros de uma consulta
+– SUM: Soma de valores
+– AVG: Média de valores
+– MAX: Valor máximo retornado pela consulta
+– MIN: Valor mínimo retornado pela consulta
+
+------------------------------------------
+COUNT
+
+• Contagem de registros de uma consulta
+SELECT COUNT(*) FROM FUNCIONARIOS
+6
+------------------------------------------
+SUM
+
+• Soma de valores
+SELECT SUM(SALARIO) FROM FUNCIONARIOS
+8610
+------------------------------------------
+AVG
+
+• Média de valores
+SELECT AVG(SALARIO) FROM FUNCIONARIOS
+1435
+------------------------------------------
+MAX
+
+• Valor máximo da consulta
+SELECT MAX(SALARIO) FROM FUNCIONARIOS
+1850
+------------------------------------------
+MIN
+
+• Valor mínimo da consulta
+SELECT MIN(SALARIO) FROM FUNCIONARIOS
+1230
+------------------------------------------
+Integrando com WHERE
+
+• SELECT Comando FROM Tabela WHERE
+Condição
+• SELECT SUM(SALARIO) FROM FUNCIONARIOS
+WHERE DEPARTAMENTO = ‘Recursos
+Humanos’
+2650
+
+------------------------------------------
+Funções de paginação
+
+• Funções de paginação
+– DISTINCT: Seleciona os valores únicos, sem repetição
+– ORDER BY: Ordena o resultado baseado nas colunas informadas
+– LIMIT: Limita o número de resultados retornados
+– OFFSET: Indica quantos registros devem ser avançados
+• Combinações são permitidas
+
+------------------------------------------
+DISTINCT
+
+• Seleciona os valores únicos, sem repetição
+SELECT DISTINCT(DEPARTAMENTO) FROM FUNCIONARIOS
+------------------------------------------
+ORDER BY
+
+• Ordena o resultado (ASC, DESC)
+SELECT * FROM FUNCIONARIOS ORDER BY SALARIO
+------------------------------------------
+LIMIT
+
+• Limita o número de registros retornados
+SELECT * FROM FUNCIONARIOS LIMIT 2
+
+------------------------------------------
+OFFSET
+
+• Avança (pula) registros do resultado
+SELECT * FROM FUNCIONARIOS OFFSET 2
+
+------------------------------------------
+Funções de agrupamento
+
+• Funções de agrupamento
+– GROUP BY: Agrupamento de registros por categoria
+– HAVING: Seleção de agrupamento
+------------------------------------------
+GROUP BY
+
+• Agrupamento de registros para operações
+SELECT DEPARTAMENTO, AVG(SALARIO) FROM
+FUNCIONARIOS GROUP BY DEPARTAMENTO
+------------------------------------------
+HAVING
+
+• Filtro de seleção para agrupamento
+SELECT DEPARTAMENTO, AVG(SALARIO) FROM
+FUNCIONARIOS GROUP BY DEPARTAMENTO HAVING
+AVG(SALARIO) > 1500
+------------------------------------------
+Subqueries
+
+• Realização de consultas com filtro de
+seleção baseado em uma lista ou outra
+seleção
+• IN / NOT IN
+SELECT NOME FROM FUNCIONARIOS WHERE
+DEPARTAMENTO IN ('Marketing', 'TI')
+------------------------------------------
+Subqueries
+
+SELECT NOME FROM FUNCIONARIOS WHERE
+DEPARTAMENTO IN (SELECT DEPARTAMENTO FROM
+FUNCIONARIOS GROUP BY DEPARTAMENTO HAVING
+AVG(SALARIO) > 1500)
+------------------------------------------
+------------------------------------------
+AULA 7 - Controle de Acesso
+------------------------------------------
+DCL - Controle de acesso
+
+• Forma de garantir que somente pessoas
+autorizadas possam realizar ações com os
+dados
+• Níveis de acesso
+–
+–
+–
+–
+Banco de dados
+Tabelas
+Colunas
+Registros
+• Níveis de ações
+– Gerenciar estruturas
+– Gerenciar dados
+– Ler dados
+------------------------------------------
+Como funciona
+
+USUÁRIO ->
+Possui acesso ao servidor?
+    Possui acesso ao banco?
+        Possui acesso a tabela?
+            Possui acesso a coluna?
+                Possui acesso ao registro?
+                    Possui acesso a operação?
+
+DADO
+
+Tentativa de acesso
+------------------------------------------
+Data Control Language
+
+• Linguagem de Controle de Dados
+– CREATE USER Nome: Cria um usuário
+– DROP USER Nome: Exclui um usuário
+– GRANT: Habilita acessos
+– REVOKE: Revoga acessos
+------------------------------------------
+Gerenciando acessos
+
+• Habilitando acesso
+GRANT Ação ON Estrutura TO Usuário
+• Revogando acesso
+REVOKE Ação ON Estrutura FROM Usuário
+• Ações
+ALL, SELECT, INSERT, UPDATE, DELETE
+• Estruturas
+TABLE, VIEW, SEQUENCE
+
+------------------------------------------
+------------------------------------------
+AULA 8 - Transações (ACID)
+------------------------------------------
+------------------------------------------
+Transações
+
+• Conjunto de operações
+• ACID
+– Atomicidade
+– Consistência
+– Isolamento
+– Durabilidade
+------------------------------------------
+Exemplo
+
+• Transferência bancária de cliente A para B
+Verifica se há saldo suficiente na conta do cliente A
+Retira da conta do cliente A o valor da transferência
+Deposita na conta do cliente B o valor da transferência
+------------------------------------------
+Exemplo ...
+------------------------------------------
+Data Transaction Language
+
+• Linguagem de Transação de Dados
+– START TRANSACTION: Inicia a transação
+– COMMIT: Concretiza a transação
+– ROLLBACK: Anula a transação
+------------------------------------------
+------------------------------------------
+AULA 9 - Stored Procedures e Triggers
+------------------------------------------
+------------------------------------------
+Stored Procedures
+
+• Blocos de código SQL armazenados no
+banco
+• Vantagens
+– Centralização
+– Segurança
+– Performance / velocidade
+– Suporte a transações
+------------------------------------------
+Exemplo de Stored Procedure
+
+• Limpeza de registros vencidos
+Verifica em uma tabela de pedidos quais foram abertos a mais de uma
+semana e ainda não foram confirmados, excluindo-os do sistema
+------------------------------------------
+Gerenciando Stored Procedures
+
+• Criando uma Stored Procedure:
+CREATE PROCEDURE Nome
+• Invocando uma Stored Procedure:
+CALL Nome
+EXECUTE Nome
+• Excluindo uma Stored Procedure:
+DROP PROCEDURE Nome
+------------------------------------------
+Triggers (Gatilhos)
+
+• Eventos que disparam códigos SQL
+• Vantagens
+– As mesmas das Stored Procedures
+– Execução de código SQL baseado em eventos
+• Tipos
+– BEFORE INSERT
+– BEFORE UPDATE
+– BEFORE DELETE
+– AFTER INSERT
+– AFTER UPDATE
+– AFTER DELETE
+– TEMPORAIS
+------------------------------------------
+Exemplo de Triggers
+
+• Limpeza de registros vencidos
+O mesmo exemplo apresentado para Stored Procedures, agora com
+Início automático baseado em algum evento de trigger
+------------------------------------------
+Gerenciando Triggers
+
+• Criando um Trigger:
+CREATE TRIGGER Nome Tipo ON tabela
+• Excluindo uma Trigger:
+DROP TRIGGER Nome
+------------------------------------------
+FIM.
