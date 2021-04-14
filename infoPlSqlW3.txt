@@ -1,0 +1,126 @@
+Tutorial de SQL
+
+SQL é uma linguagem padrão para armazenar, manipular e recuperar dados em bancos de dados.
+Nosso tutorial SQL irá ensiná-lo a usar SQL em: MySQL, SQL Server, MS Access, Oracle, Sybase, Informix, Postgres e outros sistemas de banco de dados.
+
+----------------------------------------------------------------------------------
+Introdução ao SQL
+SQL é uma linguagem padrão para acessar e manipular bancos de dados.
+
+O que é SQL?
+SQL significa Structured Query Language
+SQL permite que você acesse e manipule bancos de dados
+SQL se tornou um padrão do American National Standards Institute (ANSI) em 1986 e da International Organization for Standardization (ISO) em 1987
+
+O que o SQL pode fazer?
+SQL pode executar consultas em um banco de dados
+SQL pode recuperar dados de um banco de dados
+SQL pode inserir registros em um banco de dados
+SQL pode atualizar registros em um banco de dados
+SQL pode excluir registros de um banco de dados
+SQL pode criar novos bancos de dados
+SQL pode criar novas tabelas em um banco de dados
+SQL pode criar procedimentos armazenados em um banco de dados
+SQL pode criar visualizações em um banco de dados
+SQL pode definir permissões em tabelas, procedimentos e visualizações
+
+SQL é um padrão - MAS ....
+Embora SQL seja um padrão ANSI / ISO, existem diferentes versões da linguagem SQL.
+No entanto, para estar em conformidade com a norma ANSI, que todo o suporte, pelo menos, os comandos principais (tais como SELECT, UPDATE, DELETE, INSERT, WHERE) de uma forma semelhante.
+
+Observação: a maioria dos programas de banco de dados SQL também tem suas próprias extensões proprietárias, além do padrão SQL!
+
+Usando SQL em seu site
+Para construir um site que mostre dados de um banco de dados, você precisará de:
+
+Um programa de banco de dados RDBMS (ou seja, MS Access, SQL Server, MySQL)
+Para usar uma linguagem de script do lado do servidor, como PHP ou ASP
+Para usar SQL para obter os dados que você deseja
+Para usar HTML / CSS para estilizar a página
+
+RDBMS
+RDBMS significa Relational Database Management System.
+RDBMS é a base para SQL e para todos os sistemas de banco de dados modernos, como MS SQL Server, IBM DB2, Oracle, MySQL e Microsoft Access.
+Os dados no RDBMS são armazenados em objetos de banco de dados chamados tabelas. Uma tabela é uma coleção de entradas de dados relacionadas e consiste em colunas e linhas.
+
+Observe a tabela "Clientes":
+
+Exemplo
+SELECT * FROM Customers;
+
+Cada tabela é dividida em entidades menores chamadas campos. Os campos da tabela Clientes consistem em CustomerID, CustomerName, ContactName, Address, City, PostalCode e Country. Um campo é uma coluna em uma tabela projetada para manter informações específicas sobre cada registro na tabela.
+
+Um registro, também chamado de linha, é cada entrada individual que existe em uma tabela. Por exemplo, existem 91 registros na tabela Clientes acima. Um registro é uma entidade horizontal em uma tabela.
+
+Uma coluna é uma entidade vertical em uma tabela que contém todas as informações associadas a um campo específico em uma tabela.
+
+----------------------------------------------------------------------------------
+
+Sintaxe SQL
+Tabelas de banco de dados
+Um banco de dados geralmente contém uma ou mais tabelas. Cada tabela é identificada por um nome (por exemplo, "Clientes" ou "Pedidos"). As tabelas contêm registros (linhas) com dados.
+
+Neste tutorial, usaremos o conhecido banco de dados de exemplo Northwind (incluído no MS Access e no MS SQL Server).
+
+Instruções SQL
+A maioria das ações que você precisa executar em um banco de dados é feita com instruções SQL.
+A seguinte instrução SQL seleciona todos os registros na tabela "Clientes":
+
+Exemplo
+SELECT * FROM Customers;
+
+Neste tutorial, ensinaremos tudo sobre as diferentes instruções SQL.
+
+Tenha em mente que...
+Palavras-chave SQL NÃO diferenciam maiúsculas de minúsculas: selecté o mesmo que SELECT
+Neste tutorial, escreveremos todas as palavras-chave SQL em maiúsculas.
+
+Ponto e vírgula após instruções SQL?
+Alguns sistemas de banco de dados requerem um ponto-e-vírgula no final de cada instrução SQL.
+Ponto-e-vírgula é a forma padrão de separar cada instrução SQL em sistemas de banco de dados que permitem que mais de uma instrução SQL seja executada na mesma chamada para o servidor.
+
+Neste tutorial, usaremos ponto-e-vírgula no final de cada instrução SQL.
+
+Alguns dos comandos SQL mais importantes:
+
+SELECT - extrai dados de um banco de dados
+UPDATE - atualiza dados em um banco de dados
+DELETE - exclui dados de um banco de dados
+INSERT INTO - insere novos dados em um banco de dados
+CREATE DATABASE - cria um novo banco de dados
+ALTER DATABASE - modifica um banco de dados
+CREATE TABLE - cria uma nova mesa
+ALTER TABLE - modifica uma mesa
+DROP TABLE - exclui uma mesa
+CREATE INDEX - cria um índice (chave de pesquisa)
+DROP INDEX - exclui um índice
+
+----------------------------------------------------------------------------------
+
+Instrução SQL SELECT
+A instrução SQL SELECT
+A SELECT instrução é usada para selecionar dados de um banco de dados.
+Os dados retornados são armazenados em uma tabela de resultados, chamada de conjunto de resultados.
+
+SELECIONE Sintaxe
+SELECT column1, column2, ...
+FROM table_name;
+
+Aqui, coluna1, coluna2, ... são os nomes dos campos da tabela da qual você deseja selecionar os dados. Se você deseja selecionar todos os campos disponíveis na tabela, use a seguinte sintaxe:
+
+SELECT * FROM table_name;
+
+Exemplo de coluna SELECT
+A seguinte instrução SQL seleciona as colunas "CustomerName" e "City" da tabela "Clientes":
+
+Exemplo
+SELECT CustomerName, City FROM Customers;
+
+SELECT * Exemplo
+A seguinte instrução SQL seleciona todas as colunas da tabela "Clientes":
+
+Exemplo
+SELECT * FROM Customers;
+
+----------------------------------------------------------------------------------
+
