@@ -124,3 +124,223 @@ SELECT * FROM Customers;
 
 ----------------------------------------------------------------------------------
 
+Instrução SQL SELECT DISTINCT
+A instrução SQL SELECT DISTINCT
+A SELECT DISTINCT instrução é usada para retornar apenas valores distintos (diferentes).
+
+Dentro de uma tabela, uma coluna geralmente contém muitos valores duplicados; e às vezes você só deseja listar os valores diferentes (distintos).
+
+Sintaxe SELECT DISTINCT
+SELECT DISTINCT column1, column2, ...
+FROM table_name;
+
+SELECT Exemplo sem DISTINCT
+A seguinte instrução SQL seleciona todos os valores (incluindo as duplicatas) da coluna "País" na tabela "Clientes":
+
+Exemplo
+SELECT Country FROM Customers;
+Agora, vamos usar a SELECT DISTINCT instrução
+
+Exemplos de SELECT DISTINCT
+A seguinte instrução SQL seleciona apenas os valores DISTINCT da coluna "País" na tabela "Clientes":
+
+Exemplo
+SELECT DISTINCT Country FROM Customers;
+A seguinte instrução SQL lista o número de países clientes diferentes (distintos):
+
+Exemplo
+SELECT COUNT(DISTINCT Country) FROM Customers;
+
+A seguinte instrução SQL lista o número de países clientes diferentes (distintos):
+
+Exemplo
+SELECT COUNT(DISTINCT Country) FROM Customers;
+Nota: O exemplo acima não funcionará no Firefox! Porque COUNT (DISTINCT column_name ) não tem suporte nos bancos de dados do Microsoft Access. O Firefox está usando o Microsoft Access em nossos exemplos.
+
+Aqui está a solução alternativa para o MS Access:
+
+Exemplo
+SELECT Count(*) AS DistinctCountries
+FROM (SELECT DISTINCT Country FROM Customers);
+
+----------------------------------------------------------------------------------
+
+Cláusula SQL WHERE
+A cláusula SQL WHERE
+A WHERE cláusula é usada para filtrar registros.
+
+É usado para extrair apenas os registros que atendem a uma condição especificada.
+
+Sintaxe WHERE
+SELECT column1, column2, ...
+FROM table_name
+WHERE condition;
+Nota: A WHERE cláusula não é utilizado de SELECT declarações, ele também é usado em UPDATE, DELETE etc.!
+
+Exemplo de cláusula WHERE
+A seguinte instrução SQL seleciona todos os clientes do país "México", na tabela "Clientes":
+
+Exemplo
+SELECT * FROM Customers
+WHERE Country='Mexico';
+
+Campos de texto vs. campos numéricos
+SQL requer aspas simples em torno dos valores de texto (a maioria dos sistemas de banco de dados também permite aspas duplas).
+
+No entanto, os campos numéricos não devem ser colocados entre aspas:
+
+Exemplo
+SELECT * FROM Customers
+WHERE CustomerID=1;
+
+Operadores na cláusula WHERE
+Os seguintes operadores podem ser usados ​​na WHEREcláusula:
+
+Operator	Description	Example
+=	Equal	
+>	Greater than	
+<	Less than	
+>=	Greater than or equal	
+<=	Less than or equal	
+<>	Not equal. Note: In some versions of SQL this operator may be written as !=	
+BETWEEN	Between a certain range	
+LIKE	Search for a pattern	
+IN	To specify multiple possible values for a column
+
+----------------------------------------------------------------------------------
+
+Operadores SQL AND, OR e NOT
+Os operadores SQL AND, OR e NOT
+A WHERE cláusula pode ser combinado com AND, OR e NOT operadores.
+
+Os operadores AND e OR são usados ​​para filtrar registros com base em mais de uma condição:
+
+O AND operador exibe um registro se todas as condições separadas por AND forem TRUE.
+O OR operador exibe um registro se alguma das condições separadas por OR for TRUE.
+O NOT operador exibe um registro se as condições NÃO forem verdadeiras.
+
+Sintaxe AND
+SELECT column1, column2, ...
+FROM table_name
+WHERE condition1 AND condition2 AND condition3 ...;
+
+OR Sintaxe
+SELECT column1, column2, ...
+FROM table_name
+WHERE condition1 OR condition2 OR condition3 ...;
+
+NÃO Sintaxe
+SELECT column1, column2, ...
+FROM table_name
+WHERE NOT condition;
+
+E Exemplo
+A seguinte instrução SQL seleciona todos os campos de "Clientes" onde o país é "Alemanha" E a cidade é "Berlim":
+Exemplo
+SELECT * FROM Customers
+WHERE Country='Germany' AND City='Berlin';
+OR Exemplo
+
+A seguinte instrução SQL seleciona todos os campos de "Clientes" onde a cidade é "Berlim" OU "Munique":
+Exemplo
+SELECT * FROM Customers
+WHERE City='Berlin' OR City='München';
+
+A seguinte instrução SQL seleciona todos os campos de "Clientes" onde o país é "Alemanha" OU "Espanha":
+Exemplo
+SELECT * FROM Customers
+WHERE Country='Germany' OR Country='Spain';
+NÃO Exemplo
+
+A seguinte instrução SQL seleciona todos os campos de "Clientes" onde o país NÃO é "Alemanha":
+Exemplo
+SELECT * FROM Customers
+WHERE NOT Country='Germany';
+
+Combinando AND, OR e NOT
+Você também pode combinar as AND, OR e NOT operadores.
+
+A seguinte instrução SQL seleciona todos os campos de "Clientes" onde o país é "Alemanha" E a cidade deve ser "Berlim" OU "Munique" (use parênteses para formar expressões complexas):
+
+Exemplo
+SELECT * FROM Customers
+WHERE Country='Germany' AND (City='Berlin' OR City='München');
+
+A seguinte instrução SQL seleciona todos os campos de "Clientes" onde o país NÃO é "Alemanha" e NÃO "EUA":
+Exemplo
+SELECT * FROM Customers
+WHERE NOT Country='Germany' AND NOT Country='USA';
+
+----------------------------------------------------------------------------------
+
+Palavra-chave SQL ORDER BY
+
+A palavra-chave SQL ORDER BY
+A ORDER BYpalavra-chave é usada para classificar o conjunto de resultados em ordem crescente ou decrescente.
+
+A ORDER BY palavra-chave classifica os registros em ordem crescente por padrão. Para classificar os registros em ordem decrescente, use a DESC palavra - chave.
+
+Sintaxe ORDER BY
+SELECT column1, column2, ...
+FROM table_name
+ORDER BY column1, column2, ... ASC|DESC;
+
+Exemplo de ORDER BY
+A seguinte instrução SQL seleciona todos os clientes da tabela "Clientes", classificados pela coluna "País":
+
+Exemplo
+SELECT * FROM Customers
+ORDER BY Country;
+
+ORDER BY Várias Colunas Exemplo
+A instrução SQL a seguir seleciona todos os clientes da tabela "Clientes", classificados pela coluna "País" e "Nome do cliente". Isso significa que ele ordena por país, mas se algumas linhas têm o mesmo país, ele as classifica por CustomerName:
+
+Exemplo
+SELECT * FROM Customers
+ORDER BY Country, CustomerName;
+
+ORDENAR POR Várias Colunas Exemplo 2
+A seguinte instrução SQL seleciona todos os clientes da tabela "Clientes", classificados em ordem crescente pelo "País" e decrescente pela coluna "Nome do cliente":
+
+Exemplo
+SELECT * FROM Customers
+ORDER BY Country ASC, CustomerName DESC;
+
+----------------------------------------------------------------------------------
+
+Instrução SQL INSERT INTO
+A instrução SQL INSERT INTO
+A INSERT INTO instrução é usada para inserir novos registros em uma tabela.
+
+Sintaxe INSERT INTO
+É possível escrever a INSERT INTO declaração de duas maneiras:
+
+1. Especifique os nomes das colunas e os valores a serem inseridos:
+
+INSERT INTO table_name (column1, column2, column3, ...)
+VALUES (value1, value2, value3, ...);
+
+2. Se você estiver adicionando valores para todas as colunas da tabela, não será necessário especificar os nomes das colunas na consulta SQL. No entanto, certifique-se de que a ordem dos valores esteja na mesma ordem das colunas da tabela. Aqui, a INSERT INTO sintaxe seria a seguinte:
+
+INSERT INTO table_name
+VALUES (value1, value2, value3, ...);
+
+INSERT INTO Exemplo
+A seguinte instrução SQL insere um novo registro na tabela "Clientes":
+
+Exemplo
+INSERT INTO Customers (CustomerName, ContactName, Address, City, PostalCode, Country)
+VALUES ('Cardinal', 'Tom B. Erichsen', 'Skagen 21', 'Stavanger', '4006', 'Norway');
+
+Você percebeu que não inserimos nenhum número no campo CustomerID?
+A coluna CustomerID é um campo de incremento automático e será gerada automaticamente quando um novo registro for inserido na tabela.
+
+Inserir dados apenas em colunas especificadas
+Também é possível inserir dados apenas em colunas específicas.
+
+A seguinte instrução SQL irá inserir um novo registro, mas apenas inserir dados nas colunas "CustomerName", "City" e "Country" (CustomerID será atualizado automaticamente):
+
+Exemplo
+INSERT INTO Customers (CustomerName, City, Country)
+VALUES ('Cardinal', 'Stavanger', 'Norway');
+----------------------------------------------------------------------------------
