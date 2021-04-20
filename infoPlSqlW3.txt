@@ -344,3 +344,50 @@ Exemplo
 INSERT INTO Customers (CustomerName, City, Country)
 VALUES ('Cardinal', 'Stavanger', 'Norway');
 ----------------------------------------------------------------------------------
+
+Valores SQL NULL
+O que é um valor NULL?
+Um campo com valor NULL é um campo sem valor.
+
+Se um campo em uma tabela for opcional, é possível inserir um novo registro ou atualizar um registro sem adicionar um valor a este campo. Em seguida, o campo será salvo com um valor NULL.
+
+Observação: um valor NULL é diferente de um valor zero ou de um campo que contém espaços. Um campo com um valor NULL é aquele que foi deixado em branco durante a criação do registro!
+
+Como testar valores NULL?
+Não é possível testar os valores NULL com operadores de comparação, como =, <ou <>.
+
+Teremos que usar os operadores IS NULLe IS NOT NULLem vez disso.
+
+Sintaxe IS NULL
+SELECT column_names
+FROM table_name
+WHERE column_name IS NULL;
+
+Sintaxe NÃO É NULA
+SELECT column_names
+FROM table_name
+WHERE column_name IS NOT NULL;
+
+O operador IS NULL
+O IS NULL operador é usado para testar os valores vazios (valores NULL).
+
+O seguinte SQL lista todos os clientes com um valor NULL no campo "Endereço":
+
+Exemplo
+SELECT CustomerName, ContactName, Address
+FROM Customers
+WHERE Address IS NULL;
+
+Dica: Sempre use IS NULL para procurar valores NULL.
+
+O operador IS NOT NULL
+O IS NOT NULLo perador é usado para testar os valores não vazios (valores NOT NULL).
+
+O seguinte SQL lista todos os clientes com um valor no campo "Endereço":
+
+Exemplo
+SELECT CustomerName, ContactName, Address
+FROM Customers
+WHERE Address IS NOT NULL;
+----------------------------------------------------------------------------------
+
