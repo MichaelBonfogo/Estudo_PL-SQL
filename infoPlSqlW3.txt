@@ -391,3 +391,65 @@ FROM Customers
 WHERE Address IS NOT NULL;
 ----------------------------------------------------------------------------------
 
+Instrução SQL UPDATE
+A instrução SQL UPDATE
+A UPDATE instrução é usada para modificar os registros existentes em uma tabela.
+
+Sintaxe de ATUALIZAÇÃO
+UPDATE table_name
+SET column1 = value1, column2 = value2, ...
+WHERE condition;
+
+Nota: Tenha cuidado ao atualizar os registros em uma tabela! Observe a WHERE cláusula na UPDATE declaração. A WHERE cláusula especifica quais registros devem ser atualizados. Se você omitir a WHERE cláusula, todos os registros na tabela serão atualizados!
+
+Tabela ATUALIZAR
+A instrução SQL a seguir atualiza o primeiro cliente (CustomerID = 1) com uma nova pessoa de contato e uma nova cidade.
+
+Exemplo
+UPDATE Customers
+SET ContactName = 'Alfred Schmidt', City= 'Frankfurt'
+WHERE CustomerID = 1;
+
+ATUALIZAR vários registros
+É a WHERE cláusula que determina quantos registros serão atualizados.
+
+A seguinte instrução SQL atualizará o ContactName para "Juan" para todos os registros em que country seja "Mexico":
+
+Exemplo
+UPDATE Customers
+SET ContactName='Juan'
+WHERE Country='Mexico';
+
+Aviso de atualização!
+Tenha cuidado ao atualizar os registros. Se você omitir a WHERE cláusula, TODOS os registros serão atualizados!
+
+Exemplo
+UPDATE Customers
+SET ContactName='Juan';
+
+----------------------------------------------------------------------------------
+
+Instrução SQL DELETE
+
+A instrução SQL DELETE
+A DELETE instrução é usada para excluir registros existentes em uma tabela.
+
+Sintaxe DELETE
+DELETE FROM table_name WHERE condition;
+
+Nota: Tenha cuidado ao excluir registros em uma tabela! Observe a WHERE cláusula na DELETE declaração. A WHERE cláusula especifica quais registros devem ser excluídos. Se você omitir a WHERE cláusula, todos os registros na tabela serão excluídos!
+
+Exemplo SQL DELETE
+A seguinte instrução SQL exclui o cliente "Alfreds Futterkiste" da tabela "Clientes":
+Exemplo
+DELETE FROM Customers WHERE CustomerName='Alfreds Futterkiste';
+
+Apagar todos os registros
+É possível excluir todas as linhas de uma tabela sem excluir a tabela. Isso significa que a estrutura, os atributos e os índices da tabela ficarão intactos:
+
+DELETE FROM table_name;
+A seguinte instrução SQL exclui todas as linhas da tabela "Clientes", sem excluir a tabela:
+
+Exemplo
+DELETE FROM Customers;
+----------------------------------------------------------------------------------
